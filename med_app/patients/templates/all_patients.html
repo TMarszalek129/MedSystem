@@ -1,0 +1,30 @@
+{% extends "master.html" %}
+
+{% block title %}
+  All patients
+{% endblock %}
+
+
+{% block content %}
+  <p><a href="/">HOME</a></p>
+
+
+  <h1>Patients</h1>
+  
+  <table border='1'>
+  <tr>
+    <th>ID</th>
+    <th>Firstname</th>
+    <th>Lastname</th>
+      <th>Details</th>
+  </tr>
+  {% for x in patients %}
+    <tr>
+      <td>{{ x.id }}</td>
+        <td>{{ x.firstname }}</td>
+      <td>{{ x.lastname }}</td>
+    <td><a href="details/{{ x.id }}">INFO</a> </td>
+    </tr>
+  {% endfor %}
+</table>
+{% endblock %}
