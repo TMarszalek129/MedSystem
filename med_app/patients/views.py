@@ -41,6 +41,27 @@ def signup(request):
 
     return render(request, "registration/signup.html", {"f":form})
 
+def change_pass(request):
+    if request.method == 'GET':
+        form = forms.FormChangePassword()
+    else:
+        form = forms.FormChangePassword(request.POST)
+        if form.is_valid():
+            login_data = request.POST['login']
+            pwd_old = request.POST['oldpassword']
+            pwd_new = request.POST['newpassword']
+
+            try:
+                patient = models.Patient.objects.get(login=login_data, password=pwd_old)
+                patient.password = pwd_new
+                patient.save(update_fields=['password'])
+            except models.Patient.DoesNotExist:
+                patient = None
+                print('Patient does not exists')
+            if patient is not None:
+                return redirect('main')
+
+    return render(request, "registration/change_pass.html", {"f":form})
 
 
 def patients(request):
