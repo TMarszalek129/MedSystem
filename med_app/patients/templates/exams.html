@@ -1,0 +1,29 @@
+{% extends 'master.html' %}
+
+{% block title %}
+My examinations
+{% endblock %}
+
+{% block content %}
+
+<table style="width:100%">
+  <tr>
+    <th>Measure</th>
+    <th>Value A</th>
+    <th>Value B</th>
+    <th>Unit</th>
+    <th>Timestamp</th>
+  </tr>
+  {% for meas in m %}
+  <tr>
+    <td>{{meas.measure}}</td>
+    <td>{{meas.value_a}}</td>
+    <td>{{meas.value_b}}</td>
+    <td>{{meas.unit}}</td>
+    <td>{{meas.timestamp}}</td>
+  {% endfor %}
+  </tr>
+
+
+<p><a href="/patients/details/{{id}}">Back to your account</a></p>
+{% endblock %}

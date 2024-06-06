@@ -4,7 +4,7 @@ from django.template import loader
 from django.views.generic import CreateView
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
-
+import datetime
 from . import models, forms
 
 def main(request):
@@ -74,11 +74,45 @@ def patients(request):
 
 def details(request, id):
     patient = models.Patient.objects.get(id=id)
+    patient_birth = int(patient.birthdate.strftime("%Y"))
+    today = datetime.datetime.today().year
+    age = today - patient_birth
     template = loader.get_template('details.html')
     context = {
         'pt': patient,
+        'age' : age
     }
     return HttpResponse(template.render(context, request))
+
+def exams(request, id):
+    measurements = models.Measurement.objects.filter(patient_id=id).values()
+
+
+    # vals[0]['patient_id_id']
+
+    for m in measurements:
+        measure = models.Measure.objects.get(id=m['measure_id_id'])
+        m['unit'] = measure.unit_id
+        m['measure'] = measure.measure_name
+
+    template = loader.get_template('exams.html')
+    context = {
+        'm' : measurements,
+        'id' : id
+    }
+    return HttpResponse(template.render(context, request))
+def new_measurement(request, id):
+    if request.method == 'GET':
+        form = forms.FormMeasurement()
+    else:
+        form = forms.FormMeasurement(request.POST)
+        if form.is_valid():
+            measurement = form.save(commit=False)
+            measurement.patient_id = models.Patient.objects.get(id=id)
+            measurement.save()
+            return redirect('/patients/details/' + str(id))
+
+    return render(request, "new_measurement.html", {"f": form, "id": id})
 
 
 

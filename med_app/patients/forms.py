@@ -1,4 +1,5 @@
 from django import forms
+from datetimewidget import widgets
 from . import models
 
 
@@ -28,3 +29,14 @@ class FormPatient(forms.ModelForm):
         widgets = {'birthdate' : forms.SelectDateWidget(years=YEARS),
                    'password' : forms.PasswordInput
                    }
+class FormMeasurement(forms.ModelForm):
+
+
+    class Meta:
+        model = models.Measurement
+        fields = '__all__'
+        widgets = {'timestamp': forms.DateTimeInput(format='%Y-%m-%d %H:%M'),
+                   'patient_id': forms.HiddenInput(attrs={'value': 0})}
+
+    field_order = ['measure_id', 'value_a', 'value_b', 'timestamp']
+

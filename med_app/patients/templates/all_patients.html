@@ -19,12 +19,14 @@
       <th>Details</th>
   </tr>
   {% for x in patients %}
+    {% if x.id != 0 %}
     <tr>
       <td>{{ x.id }}</td>
         <td>{{ x.firstname }}</td>
       <td>{{ x.lastname }}</td>
     <td><a href="details/{{ x.id }}">INFO</a> </td>
     </tr>
+    {% endif %}
   {% endfor %}
 </table>
 {% endblock %}
