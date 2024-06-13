@@ -68,9 +68,10 @@ a:link, a:visited {
   text-align:center;
   color:#375BDC;
 }
-table, th, td {
-  border: 1px solid black;
-}
+{% block table %}
+
+        {% endblock %}
+
     </style>
     <title>{% block title %} Basic title  {% endblock %}</title>
 </head>
